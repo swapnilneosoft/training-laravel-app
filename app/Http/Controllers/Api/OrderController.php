@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\UserOrderMail;
+use App\Models\Configuration;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -106,7 +107,8 @@ class OrderController extends Controller
             $order->update();
             // Mail::to($request->user())->send(new MailableClass);
             Mail::to($user->email)
-                ->cc("admin@shoponline.com")
+                ->send(new UserOrderMail($order));
+            Mail::to(Configuration::getAdminEmail())
                 ->send(new UserOrderMail($order));
         } catch (\Throwable $th) {
             return response()->json(["message" => $th->getMessage(), "status" => 500]);
@@ -149,6 +151,6 @@ class OrderController extends Controller
         if ($order->update()) {
             return response()->json(["message" => "Payment Success !", "status" => 200]);
         }
-        return response()->json(["message"=>"Unabele to catch payment","status"=>403]);
+        return response()->json(["message" => "Unabele to catch payment", "status" => 403]);
     }
 }

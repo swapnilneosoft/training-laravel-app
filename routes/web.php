@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -119,6 +120,10 @@ Route::group(["middleware" => ["auth", "RoleCheck"], "prefix" => "admin"], funct
         Route::post('/customer',[ReportController::class,'getCustomerReport'])->name("customer-report");
         Route::post('/used-coupon',[ReportController::class,'getUsedCouponReport'])->name("used-coupon-report");
         Route::post('/sales',[ReportController::class,'getSalesReport'])->name("sales-report");
+    });
+    Route::group(['prefix'=>'config'],function(){
+        Route::get("/list",[ConfigController::class,'index'])->name('config-list');
+        Route::post("/list",[ConfigController::class,'store']);
     });
 });
 

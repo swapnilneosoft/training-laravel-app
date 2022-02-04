@@ -183,6 +183,15 @@
             </ul>
         </li>
         <li class="nav-item">
+            <a href="{{ route('config-list') }}"
+                class="nav-link {{ $sidebarLink['active'] == 'listContact' ? 'active' : '' }}">
+                <i class="fas fa-cogs"></i>
+                <p>
+                    Configuration
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('contact-list') }}"
                 class="nav-link {{ $sidebarLink['active'] == 'listContact' ? 'active' : '' }}">
                 <i class="nav-icon far fa-envelope"></i>
@@ -191,6 +200,7 @@
                 </p>
             </a>
         </li>
+
 
     </ul>
 </nav>
