@@ -69,7 +69,7 @@
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->value }}</td>
                                     <td>
-                                        <a href="/admin/sub-category/update/{{ $item->id }}"
+                                        <a href="/admin/config/update/{{ $item->id }}"
                                             class="btn btn-info">Update</a>
                                     </td>
                                 </tr>

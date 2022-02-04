@@ -34,7 +34,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/mail',function(){
+Route::get('/mail', function () {
     return view("mail.usermail");
 });
 
@@ -109,22 +109,25 @@ Route::group(["middleware" => ["auth", "RoleCheck"], "prefix" => "admin"], funct
         Route::get('/status/{id}', [ContactController::class, 'statusManage'])->name("contact-status");
     });
 
-    Route::group(["prefix"=>"order"],function(){
-        Route::get("/all-orders",[OrderController::class,'getAllOrders'])->name("all-order-list");
-        Route::get("/pending-orders",[OrderController::class,'getPendingOrders'])->name("pending-order-list");
-        Route::get("/delivered-orders",[OrderController::class,'getDeliveredOrders'])->name("delivered-order-list");
-        Route::get("/preview/{id}",[OrderController::class,'orderPreview'])->name("order-preview");
-        Route::post('/status',[OrderController::class,'statusManage'])->name("manage-status");
+    Route::group(["prefix" => "order"], function () {
+        Route::get("/all-orders", [OrderController::class, 'getAllOrders'])->name("all-order-list");
+        Route::get("/pending-orders", [OrderController::class, 'getPendingOrders'])->name("pending-order-list");
+        Route::get("/delivered-orders", [OrderController::class, 'getDeliveredOrders'])->name("delivered-order-list");
+        Route::get("/preview/{id}", [OrderController::class, 'orderPreview'])->name("order-preview");
+        Route::post('/status', [OrderController::class, 'statusManage'])->name("manage-status");
     });
-    Route::group(["prefix"=>"report"],function(){
-        Route::post('/customer',[ReportController::class,'getCustomerReport'])->name("customer-report");
-        Route::post('/used-coupon',[ReportController::class,'getUsedCouponReport'])->name("used-coupon-report");
-        Route::post('/sales',[ReportController::class,'getSalesReport'])->name("sales-report");
+    Route::group(["prefix" => "report"], function () {
+        Route::post('/customer', [ReportController::class, 'getCustomerReport'])->name("customer-report");
+        Route::post('/used-coupon', [ReportController::class, 'getUsedCouponReport'])->name("used-coupon-report");
+        Route::post('/sales', [ReportController::class, 'getSalesReport'])->name("sales-report");
     });
-    Route::group(['prefix'=>'config'],function(){
-        Route::get("/list",[ConfigController::class,'index'])->name('config-list');
-        Route::post("/list",[ConfigController::class,'store']);
+    Route::group(['prefix' => 'config'], function () {
+        Route::get("/list", [ConfigController::class, 'index'])->name('config-list');
+        Route::post("/list", [ConfigController::class, 'store']);
+        Route::get("/update/{id}", [ConfigController::class, 'show']);
+        Route::post("/update/{id}", [ConfigController::class, 'update']);
     });
+
 });
 
 require __DIR__ . '/auth.php';
