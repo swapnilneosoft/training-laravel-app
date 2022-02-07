@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CmsController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CouponController;
@@ -72,6 +73,9 @@ Route::group(["middleware" => ["auth", "RoleCheck"], "prefix" => "admin"], funct
     // Search api
     Route::get('/category/search/{q}', [CategoryController::class, 'search']);
     Route::get("/get-subcategory/{id}", [CategoryController::class, 'getSubcategoriesById']);
+    Route::get('/order/search/all/{q}',[OrderController::class,'searchAllOrders']);
+    Route::get('/order/search/pending/{q}',[OrderController::class,'searchPendingOrders']);
+    Route::get('/order/search/delivered/{q}',[OrderController::class,'searchDeliveredOrders']);
 
     // Sub Category Routes
     Route::group(["prefix" => "sub-category"], function () {
@@ -126,6 +130,13 @@ Route::group(["middleware" => ["auth", "RoleCheck"], "prefix" => "admin"], funct
         Route::post("/list", [ConfigController::class, 'store']);
         Route::get("/update/{id}", [ConfigController::class, 'show']);
         Route::post("/update/{id}", [ConfigController::class, 'update']);
+    });
+
+    Route::group(["prefix"=>'cms'],function(){
+        Route::get('/list',[CmsController::class,'index'])->name('cms-list');
+        Route::post('/list',[CmsController::class,'store']);
+        Route::get('/update/{id}',[CmsController::class,'edit']);
+        Route::post('/update/{id}',[CmsController::class,'update']);
     });
 
 });

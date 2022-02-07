@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactMail;
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Configuration;
 use App\Models\Contact;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class BasicRequestController extends Controller
@@ -21,7 +24,7 @@ class BasicRequestController extends Controller
         foreach ($banner as $key => $value) {
             $bannerList[] = [
                 "image" => config('app.url') . $value->image_url,
-                "description"=>$value->caption
+                "description" => $value->caption
             ];
         }
 
@@ -38,7 +41,7 @@ class BasicRequestController extends Controller
             $image = [];
             foreach ($value->getImages as $key => $val) {
                 $image[] = [
-                   asset($val->image_url)
+                    asset($val->image_url)
                 ];
             }
             $productList[] = [
@@ -83,6 +86,8 @@ class BasicRequestController extends Controller
             "query" => $request->input('query')
         ]);
         if ($contact) {
+            Mail::to(Configuration::getAdminEmail())
+                ->send(new ContactMail($contact));
             return response()->json(["message" => "Feedback Submitted successfully !"], 200);
         }
         return response()->json(["message" => "Unable to submit feedback !"], 500);

@@ -16,12 +16,35 @@
         <div class="col">
             <div class="card">
                 <!-- /.card-header -->
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th  colspan="6">
+                                            <form action="" style="display: flex" id="allOrderSerachForm">
+                                                <input type="text"  class="form-control" style="width: 80%" id="allOrderSerachInput" placeholder="Search by  order id">
+                                                <button class="btn btn-success form-control" style="width:20%" type="button" id="allOrderSerachButton"><i class="fas fa-search"></i></button>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th style="width:100px">id</th>
+                                <th style="width:100px">Order id</th>
+                                <th>User</th>
                                 <th>amount</th>
                                 <th>payment mode</th>
                                 <th>payment status</th>
@@ -41,8 +64,9 @@
                                 <tr>
                                     <td>{{ $sr }}</td>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{$item->getUser->email}}</td>
                                     <td>{{ $item->amount }}</td>
-                                    <td>{{ $item->payment_mode == 0 ? 'Cash On Delivery' : 'Online'   }}</td>
+                                    <td>{{ $item->payment_mode == 0 ? 'COD' : 'Online'   }}</td>
                                     <td>{{ $item->payment_status == 1 ? 'Paid' : 'Unpaid'  }}</td>
                                     <td>{{ $item->status == 0 ? 'Processing' : ($item->status == 1 ? 'Dispatched' : 'Delivered') }}</td>
 

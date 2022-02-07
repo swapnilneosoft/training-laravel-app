@@ -183,8 +183,17 @@
             </ul>
         </li>
         <li class="nav-item">
+            <a href="{{ route('cms-list') }}"
+                class="nav-link {{ $sidebarLink['active'] == 'listCms' ? 'active' : '' }}">
+                <i class="fab fa-accusoft"></i>
+                <p>
+                    CMS
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('config-list') }}"
-                class="nav-link {{ $sidebarLink['active'] == 'listContact' ? 'active' : '' }}">
+                class="nav-link {{ $sidebarLink['active'] == 'listConfig' ? 'active' : '' }}">
                 <i class="fas fa-cogs"></i>
                 <p>
                     Configuration

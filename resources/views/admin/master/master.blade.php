@@ -36,6 +36,7 @@
         }
 
     </style>
+    @yield('page-head')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

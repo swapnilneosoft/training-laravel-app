@@ -22,6 +22,26 @@
                         <div class="col-1">:</div>
                         <div class="col-9">{{ $order->id }}</div>
                     </div>
+                    <div class="row m-1 p-2 ">
+                        <div class="col-2">User</div>
+                        <div class="col-1">:</div>
+                        <div class="col-9">
+                            {{ $order->getUser->email }}
+                        </div>
+                    </div>
+
+                    <div class="row m-1 p-2 ">
+                        <div class="col-2">Address</div>
+                        <div class="col-1">:</div>
+                        <div class="col-9">
+                            <b>{{ $order->getAddress->fullname }}</b>,
+                            {{ $order->getAddress->address }},
+                            {{ $order->getAddress->city }},
+                            {{ $order->getAddress->state }},
+                            {{ $order->getAddress->pincode }},
+                            {{ $order->getAddress->mobile_no }}
+                        </div>
+                    </div>
                     <div class="row m-1 p-2 bg-light">
                         <div class="col-2 ">Amount</div>
                         <div class="col-1">:</div>

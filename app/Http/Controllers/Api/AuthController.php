@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserRegister;
+use App\Mail\UserRegisterAdmin;
+use App\Models\Configuration;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Js;
 
@@ -44,29 +48,30 @@ class AuthController extends Controller
             "lastname" => ["required"],
         ]);
         if ($validate->fails()) {
-            return response()->json($validate->errors(), 401);
+            return response()->json(["message" => $validate->errors(), 'status' => 401]);
         }
 
-        try {
-            $user = User::create([
-                "firstname" => $request->firstname,
-                "lastname" => $request->lastname,
-                "email" => $request->email,
-                "password" => Hash::make($request->password),
-                "role_id" => User::Roles['Customer'],
-            ]);
-            if ($user) {
-                $user = [
-                    "firstname" => $user->firstname,
-                    "lastname" => $user->lastname,
-                    "email" => $user->email,
-                    "role" => $user->getRole->name,
-                    "status" => 'Active'
-                ];
-                return response()->json(["user" => $user], 200);
-            }
-        } catch (\Throwable $th) {
-            return response()->json([$th->getMessage(), "message" => "error"]);
+
+        $user = User::create([
+            "firstname" => $request->firstname,
+            "lastname" => $request->lastname,
+            "email" => $request->email,
+            "password" => Hash::make($request->password),
+            "role_id" => User::Roles['Customer'],
+        ]);
+        if ($user) {
+            $user = [
+                "firstname" => $user->firstname,
+                "lastname" => $user->lastname,
+                "email" => $user->email,
+                "role" => $user->getRole->name,
+                "status" => 'Active'
+            ];
+            Mail::to($request->email)
+                ->send(new UserRegister(['email' => $request->email, 'password' => $request->password]));
+            Mail::to(Configuration::getAdminEmail())
+                ->send(new UserRegisterAdmin($request->email));
+            return response()->json(["user" => $user, 'status' => 200]);
         }
     }
 

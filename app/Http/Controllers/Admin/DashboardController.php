@@ -7,18 +7,57 @@ use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Coupon;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\SubCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     // Admin Side bar link controller
     public function index()
     {
-        return view("admin.pages.dashboard");
+        // For Sales Report
+        $all = Order::all()->count();
+        $processing = Order::where('status','0')->count();
+        $disptatched = Order::where('status','1')->count();
+        $delivered = Order::where('status','2')->count();
+
+        // For coupon used
+        $coupons = DB::select(DB::raw("
+            SELECT count(*) AS coupon_count,coupon_id AS id FROM used_coupons GROUP BY coupon_id
+        "));
+        $copnChart ="";
+        $total_coupons = 0;
+        foreach($coupons as $item)
+        {
+            $code = Coupon::find($item->id)->code;
+            $coupon_count = $item->coupon_count;
+            $copnChart .= "['".$code."',".$coupon_count."],";
+            $total_coupons += $item->coupon_count;
+        }
+
+        // For Registered Users
+        $admin = User::where('role_id',User::Roles['Admin'])->get()->count();
+        $customer = User::where('role_id',User::Roles['Customer'])->get()->count();
+        $totalUsers = $admin+$customer;
+
+        return view("admin.pages.dashboard",['sales'=>[
+            'all'=>$all,
+            'processing'=>$processing,
+            'disptached'=>$disptatched,
+            'delivered'=>$delivered
+        ],
+        'coupon'=>rtrim($copnChart,','),
+        'users'=>[
+            'admin'=>$admin,
+            'customer'=>$customer,
+            'total'=>$totalUsers
+        ]
+    ]);
     }
 
     public function getUserList()

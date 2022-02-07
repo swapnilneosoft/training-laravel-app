@@ -153,3 +153,143 @@ $("#categpry").on("change", function () {
         }
     });
 });
+
+
+$('#allOrderSerachButton').click(function () {
+    var serc = $('#allOrderSerachInput').val();
+    var tbody = $("#tbody");
+    tbody.html('');
+    if (serc != '') {
+        $.ajax(`/admin/order/search/all/${serc}`, {
+            type: 'GET',
+            success: function (res) {
+                console.log(res)
+                if (res != '') {
+                    res.forEach((element, index) => {
+                        tbody.append(`
+                               <tr>
+                               <td></td>
+                               <td>${element.id}</td>
+                               <td>${element.user}</td>
+                               <td>${element.amount}</td>
+                               <td>${element.payment_mode}</td>
+                               <td>${element.payment_status}</td>
+                               <td>${element.order_status}</td>
+
+
+                               <td>
+                                   <a href="/admin/order/preview/${element.id}"
+                                       class="btn btn-info">preview</a>
+                               </td>
+                                </tr>
+                               `);
+
+                    });
+                } else {
+                    tbody.append(
+                        `
+                                        <tr class="text-secondary">
+                                            <td style="width:100%;text-align:center;">No Data Found</td>
+                                        </tr>
+                                    `
+                    );
+                }
+            }
+        })
+    } else {
+        alert("Please enter order id or user email")
+    }
+})
+
+$('#pendingOrderSerachButton').click(function () {
+    var serc = $('#pendingOrderSerachInput').val();
+    var tbody = $("#tbody");
+    tbody.html('');
+    if (serc != '') {
+        $.ajax(`/admin/order/search/pending/${serc}`, {
+            type: 'GET',
+            success: function (res) {
+                console.log(res)
+                if (res != '') {
+                    res.forEach((element, index) => {
+                        tbody.append(`
+                               <tr>
+                               <td></td>
+                               <td>${element.id}</td>
+                               <td>${element.user}</td>
+                               <td>${element.amount}</td>
+                               <td>${element.payment_mode}</td>
+                               <td>${element.payment_status}</td>
+                               <td>${element.order_status}</td>
+
+
+                               <td>
+                                   <a href="/admin/order/preview/${element.id}"
+                                       class="btn btn-info">preview</a>
+                               </td>
+                                </tr>
+                               `);
+
+                    });
+                } else {
+                    tbody.append(
+                        `
+                                        <tr class="text-secondary">
+                                            <td style="width:100%;text-align:center;">No Data Found</td>
+                                        </tr>
+                                    `
+                    );
+                }
+            }
+        })
+    } else {
+        alert("Please enter order id")
+    }
+})
+
+$('#deliveredOrderSerachButton').click(function () {
+    var serc = $('#deliveredOrderSerachInput').val();
+    var tbody = $("#tbody");
+    tbody.html('');
+    if (serc != '') {
+        $.ajax(`/admin/order/search/delivered/${serc}`, {
+            type: 'GET',
+            success: function (res) {
+                console.log(res)
+                if (res != '') {
+                    res.forEach((element, index) => {
+                        tbody.append(`
+                               <tr>
+                               <td></td>
+                               <td>${element.id}</td>
+                               <td>${element.user}</td>
+                               <td>${element.amount}</td>
+                               <td>${element.payment_mode}</td>
+                               <td>${element.payment_status}</td>
+                               <td>${element.order_status}</td>
+
+
+                               <td>
+                                   <a href="/admin/order/preview/${element.id}"
+                                       class="btn btn-info">preview</a>
+                               </td>
+                                </tr>
+                               `);
+
+                    });
+                } else {
+                    tbody.append(
+                        `
+                                        <tr class="text-secondary">
+                                            <td style="width:100%;text-align:center;">No Data Found</td>
+                                        </tr>
+                                    `
+                    );
+                }
+            }
+        })
+    } else {
+        alert("Please enter order id")
+    }
+})
+
